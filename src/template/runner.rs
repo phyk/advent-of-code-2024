@@ -136,6 +136,7 @@ fn submit_result<T: Display>(
     result: T,
     day: Day,
     part: u8,
+
 ) -> Option<Result<Output, aoc_cli::AocCommandError>> {
     let args: Vec<String> = env::args().collect();
 
@@ -159,11 +160,15 @@ fn submit_result<T: Display>(
         return None;
     }
 
+    let file_index = args.iter().position(|x| x == "--session-file").unwrap() + 1;
+
+    let file_name = &args[file_index];
+
     if aoc_cli::check().is_err() {
         eprintln!("command \"aoc\" not found or not callable. Try running \"cargo install aoc-cli\" to install it.");
         process::exit(1);
     }
 
     println!("Submitting result via aoc-cli...");
-    Some(aoc_cli::submit(day, part, &result.to_string()))
+    Some(aoc_cli::submit(day, part, &result.to_string(), &file_name))
 }

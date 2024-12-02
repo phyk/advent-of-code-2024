@@ -13,6 +13,7 @@ mod args {
     pub enum AppArguments {
         Download {
             day: Day,
+            session_file: String,
         },
         Read {
             day: Day,
@@ -59,6 +60,7 @@ mod args {
             }
             Some("download") => AppArguments::Download {
                 day: args.free_from_str()?,
+                session_file: args.free_from_str()?,
             },
             Some("read") => AppArguments::Read {
                 day: args.free_from_str()?,
@@ -104,8 +106,8 @@ fn main() {
         Ok(args) => match args {
             AppArguments::All { release } => all::handle(release),
             AppArguments::Time { day, all, store } => time::handle(day, all, store),
-            AppArguments::Download { day } => download::handle(day),
-            AppArguments::Read { day } => read::handle(day),
+            AppArguments::Download { day, session_file } => download::handle(day, session_file),
+            AppArguments::Read { day } => read::handle(day, ".adventofcode.session"),
             AppArguments::Scaffold {
                 day,
                 download,
@@ -113,7 +115,7 @@ fn main() {
             } => {
                 scaffold::handle(day, overwrite);
                 if download {
-                    download::handle(day);
+                    download::handle(day, ".adventofcode.session".into());
                 }
             }
             AppArguments::Solve {
@@ -121,14 +123,14 @@ fn main() {
                 release,
                 dhat,
                 submit,
-            } => solve::handle(day, release, dhat, submit),
+            } => solve::handle(day, release, dhat, submit, ".adventofcode.session"),
             #[cfg(feature = "today")]
             AppArguments::Today => {
                 match Day::today() {
                     Some(day) => {
                         scaffold::handle(day, false);
-                        download::handle(day);
-                        read::handle(day)
+                        download::handle(day, ".adventofcode.session".into());
+                        read::handle(day, ".adventofcode.session")
                     }
                     None => {
                         eprintln!(
