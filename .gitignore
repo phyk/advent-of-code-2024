@@ -31,3 +31,4 @@ data/timings.json
 
 # Session cookie
 .adventofcode.session
+private_leaderboard
