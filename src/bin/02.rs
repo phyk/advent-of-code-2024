@@ -28,17 +28,19 @@ fn is_safe(vec_: &Vec<u32>) -> (bool, Option<usize>) {
     while index < vec_.len() {
         let last_value = vec_[index - 1];
         let current_value = vec_[index];
-        if has_jump(current_value, last_value) | (current_value == last_value) | wrong_direction(current_value, last_value, direction) {
-            return (false, Some(index))
+        if has_jump(current_value, last_value)
+            | (current_value == last_value)
+            | wrong_direction(current_value, last_value, direction)
+        {
+            return (false, Some(index));
         }
         if direction.is_none() {
             direction = Some(last_value < current_value);
         }
         index += 1;
     }
-    return (true, None)
+    return (true, None);
 }
-
 
 pub fn part_one(input: &str) -> Option<u32> {
     let re = Regex::new(r"([0-9 ]+)\n").unwrap();
@@ -47,7 +49,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     for (_, [value_line]) in re.captures_iter(input).map(|c| c.extract()) {
         let mut values = vec![];
 
-        for (_, [value]) in re_elements.captures_iter(value_line).map(|c|c.extract()) {
+        for (_, [value]) in re_elements.captures_iter(value_line).map(|c| c.extract()) {
             let current_value = usize::from_str_radix(value, 10).unwrap();
             values.push(current_value.try_into().unwrap());
         }
@@ -66,7 +68,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     for (_, [value_line]) in re.captures_iter(input).map(|c| c.extract()) {
         let mut values: Vec<u32> = vec![];
 
-        for (_, [value]) in re_elements.captures_iter(value_line).map(|c|c.extract()) {
+        for (_, [value]) in re_elements.captures_iter(value_line).map(|c| c.extract()) {
             let current_value = usize::from_str_radix(value, 10).unwrap();
             values.push(current_value.try_into().unwrap());
         }

@@ -1,6 +1,6 @@
 advent_of_code::solution!(1);
-use std::iter::zip;
 use std::collections::HashMap;
+use std::iter::zip;
 
 use regex::Regex;
 
@@ -11,8 +11,18 @@ pub fn part_one(input: &str) -> Option<u32> {
     let mut values_2: Vec<u32> = Vec::with_capacity(capacity);
 
     for (_, [value_1, value_2]) in re.captures_iter(input).map(|c| c.extract()) {
-        values_1.push(usize::from_str_radix(value_1, 10).unwrap().try_into().unwrap());
-        values_2.push(usize::from_str_radix(value_2, 10).unwrap().try_into().unwrap());
+        values_1.push(
+            usize::from_str_radix(value_1, 10)
+                .unwrap()
+                .try_into()
+                .unwrap(),
+        );
+        values_2.push(
+            usize::from_str_radix(value_2, 10)
+                .unwrap()
+                .try_into()
+                .unwrap(),
+        );
     }
     values_1.sort();
     values_2.sort();
@@ -36,8 +46,18 @@ pub fn part_two(input: &str) -> Option<u32> {
     let mut values_2: Vec<u32> = Vec::with_capacity(capacity);
 
     for (_, [value_1, value_2]) in re.captures_iter(input).map(|c| c.extract()) {
-        values_1.push(usize::from_str_radix(value_1, 10).unwrap().try_into().unwrap());
-        values_2.push(usize::from_str_radix(value_2, 10).unwrap().try_into().unwrap());
+        values_1.push(
+            usize::from_str_radix(value_1, 10)
+                .unwrap()
+                .try_into()
+                .unwrap(),
+        );
+        values_2.push(
+            usize::from_str_radix(value_2, 10)
+                .unwrap()
+                .try_into()
+                .unwrap(),
+        );
     }
     for value_2 in values_2 {
         if map.contains_key(&value_2) {

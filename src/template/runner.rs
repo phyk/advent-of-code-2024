@@ -136,7 +136,6 @@ fn submit_result<T: Display>(
     result: T,
     day: Day,
     part: u8,
-
 ) -> Option<Result<Output, aoc_cli::AocCommandError>> {
     let args: Vec<String> = env::args().collect();
 

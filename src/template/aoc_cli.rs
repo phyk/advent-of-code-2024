@@ -43,7 +43,7 @@ pub fn read(day: Day, session_file: &str) -> Result<Output, AocCommandError> {
             "--puzzle-file".into(),
             puzzle_path,
             "--session-file".into(),
-            session_file.into()
+            session_file.into(),
         ],
         day,
     );
@@ -64,7 +64,7 @@ pub fn download(day: Day, session_file: String) -> Result<Output, AocCommandErro
             "--puzzle-file".into(),
             puzzle_path.to_string(),
             "--session-file".into(),
-            session_file
+            session_file,
         ],
         day,
     );
@@ -76,7 +76,12 @@ pub fn download(day: Day, session_file: String) -> Result<Output, AocCommandErro
     Ok(output)
 }
 
-pub fn submit(day: Day, part: u8, result: &str, session_file: &str) -> Result<Output, AocCommandError> {
+pub fn submit(
+    day: Day,
+    part: u8,
+    result: &str,
+    session_file: &str,
+) -> Result<Output, AocCommandError> {
     // workaround: the argument order is inverted for submit.
     let mut args = build_args("submit", &[], day);
     args.push(part.to_string());
