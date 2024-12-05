@@ -77,15 +77,19 @@ pub fn is_xmas(one: &str, two: &str, thre: &str, fou: &str) -> usize {
     }
 }
 
-pub fn is_x_mas(up_l: &str, up_r: &str, do_l: &str, do_r: &str) -> usize{
-    if !matches!(up_l, "M"|"S") || !matches!(up_r, "M"|"S") || !matches!(do_l, "M"|"S") || !matches!(do_r, "M"|"S"){
+pub fn is_x_mas(up_l: &str, up_r: &str, do_l: &str, do_r: &str) -> usize {
+    if !matches!(up_l, "M" | "S")
+        || !matches!(up_r, "M" | "S")
+        || !matches!(do_l, "M" | "S")
+        || !matches!(do_r, "M" | "S")
+    {
         return 0;
     } else if (up_l == up_r) && (up_l != do_l) && (do_l == do_r) {
         return 1;
     } else if (up_l == do_l) && (up_l != up_r) && (up_r == do_r) {
         return 1;
     }
-    return 0
+    return 0;
 }
 
 pub fn part_two(input: &str) -> Option<usize> {
