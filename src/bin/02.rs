@@ -1,8 +1,6 @@
 advent_of_code::solution!(2);
 use std::usize;
 
-use regex::Regex;
-
 fn has_jump(value: u32, comparison: u32) -> bool {
     ((value + 3) < comparison) | (value > (comparison + 3))
 }
@@ -36,14 +34,16 @@ fn is_safe(vec_: &Vec<u32>) -> (bool, Option<usize>) {
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let re = Regex::new(r"([0-9 ]+)\n").unwrap();
-    let re_elements = Regex::new(r"(\d+)\b").unwrap();
     let mut num_safe_results = 0;
-    for (_, [value_line]) in re.captures_iter(input).map(|c| c.extract()) {
+    let lines = input.split("\n");
+    for line in lines {
+        if line.len() == 0 {
+            continue;
+        }
         let mut values = vec![];
 
-        for (_, [value]) in re_elements.captures_iter(value_line).map(|c| c.extract()) {
-            let current_value = usize::from_str_radix(value, 10).unwrap();
+        for element in line.split(" ") {
+            let current_value = usize::from_str_radix(element, 10).unwrap();
             values.push(current_value.try_into().unwrap());
         }
         let (safety, _) = is_safe(&values);
@@ -55,13 +55,14 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let re = Regex::new(r"([0-9 ]+)\n").unwrap();
-    let re_elements = Regex::new(r"(\d+)\b").unwrap();
     let mut num_safe_results = 0;
-    for (_, [value_line]) in re.captures_iter(input).map(|c| c.extract()) {
+    for line in input.split("\n") {
+        if line.len() == 0 {
+            continue;
+        }
         let mut values: Vec<u32> = vec![];
 
-        for (_, [value]) in re_elements.captures_iter(value_line).map(|c| c.extract()) {
+        for value in line.split(" ") {
             let current_value = usize::from_str_radix(value, 10).unwrap();
             values.push(current_value.try_into().unwrap());
         }
