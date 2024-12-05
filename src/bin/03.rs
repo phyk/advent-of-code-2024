@@ -14,7 +14,6 @@ pub fn part_one(input: &str) -> Option<u32> {
 
 pub fn part_two(input: &str) -> Option<u32> {
     let re = Regex::new(r"(mul|do|don't)\(([0-9,]*)\)").unwrap();
-    println!("{}", re);
     let mut sum = 0;
     let mut enabled = true;
     for (_, [expr, value]) in re.captures_iter(input).map(|c| c.extract()) {

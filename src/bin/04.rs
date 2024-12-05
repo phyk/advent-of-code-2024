@@ -95,8 +95,6 @@ pub fn is_x_mas(up_l: &str, up_r: &str, do_l: &str, do_r: &str) -> usize {
 pub fn part_two(input: &str) -> Option<usize> {
     let parsed_input = Input::new(input);
     let mut num_xmas: usize = 0;
-    println!("{} {}", parsed_input.n_cols, parsed_input.n_rows);
-    println!("{}", parsed_input.get_char(2, 1));
     for y_ in 0..parsed_input.n_rows {
         for x_ in 0..parsed_input.n_cols {
             let x: isize = x_.try_into().unwrap();
@@ -123,8 +121,6 @@ pub fn part_two(input: &str) -> Option<usize> {
 pub fn part_one(input: &str) -> Option<usize> {
     let parsed_input = Input::new(input);
     let mut num_xmas: usize = 0;
-    println!("{} {}", parsed_input.n_cols, parsed_input.n_rows);
-    println!("{}", parsed_input.get_char(2, 1));
     for y_ in 0..parsed_input.n_rows {
         for x_ in 0..parsed_input.n_cols {
             let x: isize = x_.try_into().unwrap();

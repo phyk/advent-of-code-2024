@@ -15,14 +15,7 @@ fn wrong_direction(value: u32, comparison: u32, direction: Option<bool>) -> bool
     }
 }
 
-fn print_vec(vec_: &Vec<u32>) {
-    for element in vec_ {
-        print!("{} ", element)
-    }
-}
-
 fn is_safe(vec_: &Vec<u32>) -> (bool, Option<usize>) {
-    print_vec(&vec_);
     let mut direction: Option<bool> = None;
     let mut index = 1;
     while index < vec_.len() {
