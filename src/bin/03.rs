@@ -1,8 +1,8 @@
 advent_of_code::solution!(3);
-use regex::Regex;
+use regex;
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let re = Regex::new(r"mul\(([0-9]+),([0-9]+)\)").unwrap();
+    let re = regex::Regex::new(r"mul\(([0-9]+),([0-9]+)\)").unwrap();
     let mut sum = 0;
     for (_, [a, b]) in re.captures_iter(input).map(|c| c.extract()) {
         let a_usize = u32::from_str_radix(a, 10).unwrap();
@@ -13,7 +13,7 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let re = Regex::new(r"(mul|do|don't)\(([0-9,]*)\)").unwrap();
+    let re = regex::Regex::new(r"(mul|do|don't)\(([0-9,]*)\)").unwrap();
     let mut sum = 0;
     let mut enabled = true;
     for (_, [expr, value]) in re.captures_iter(input).map(|c| c.extract()) {
