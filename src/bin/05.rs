@@ -70,8 +70,14 @@ fn sort_values_rules(a: &usize, b: &usize, rules_a: &Vec<usize>, rules_b: &Vec<u
 fn reorder_sample(sample: &Vec<usize>, rules: &HashMap<usize, Vec<usize>>) -> Vec<usize> {
     let mut sample_copy = sample.clone();
     let default = vec![];
-    sample_copy
-        .sort_by(|a, b| sort_values_rules(a, b, rules.get(a).unwrap_or_else(|| &default), rules.get(b).unwrap_or_else(|| &default)));
+    sample_copy.sort_by(|a, b| {
+        sort_values_rules(
+            a,
+            b,
+            rules.get(a).unwrap_or_else(|| &default),
+            rules.get(b).unwrap_or_else(|| &default),
+        )
+    });
     sample_copy
 }
 
