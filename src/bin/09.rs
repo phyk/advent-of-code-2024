@@ -1,3 +1,5 @@
+use std::{collections::HashMap, usize};
+
 advent_of_code::solution!(9);
 
 pub fn part_one(input: &str) -> Option<usize> {
@@ -35,50 +37,60 @@ pub fn part_one(input: &str) -> Option<usize> {
 }
 
 pub fn part_two(input: &str) -> Option<usize> {
-    return Some(0);
-    let mut currently_block = true;
-    let mut out_vec = vec![];
-    let mut set_groups = vec![];
-    for x in 0..input.len() - 1 {
-        let mut current_block_length = usize::from_str_radix(&input[x..x + 1], 10).unwrap();
-        let mut y = input.len() - 2;
-        if currently_block {
-            currently_block = !currently_block;
-            if set_groups.contains(&x) {
-                out_vec.push((0, current_block_length));
+    let mut checksum = 0;
+    let mut index = 0;
+    let mut set_groups = vec![false; input.len()];
+    let blocks: Vec<(usize, usize)> = input
+        .chars()
+        .zip(0..input.len())
+        .filter(|(c, _)| *c != '\n')
+        .map(|(c, idx)| (usize::from_str_radix(&format!("{c}"), 10).unwrap(), idx))
+        .collect();
+    let mut map: HashMap<usize, Vec<usize>> = HashMap::new();
+    for (block_length, idx) in &blocks {
+        if idx % 2 == 0 {
+            if map.contains_key(&block_length) {
+                map.get_mut(&block_length)?.push(idx / 2);
+            } else {
+                map.insert(*block_length, vec![idx / 2]);
+            }
+        }
+    }
+    for (mut current_block_length, idx) in blocks {
+        if idx % 2 == 0 {
+            if set_groups[idx] {
+                index += current_block_length;
                 continue;
             }
-            out_vec.push((x / 2, current_block_length));
-            set_groups.push(x);
+            let checkadd: usize = (index..index + current_block_length)
+                .map(|idx_| idx_ * (idx / 2))
+                .sum();
+            checksum += checkadd;
+            index += current_block_length;
+            set_groups[idx] = true;
         } else {
-            currently_block = !currently_block;
-            while y > x && current_block_length > 0 {
-                if set_groups.contains(&y) {
-                    y -= 2;
-                    continue;
+            while current_block_length > 0 {
+                let block = (1..current_block_length + 1)
+                    .map(|v| (v, *map[&v].last().unwrap_or(&0)))
+                    .max_by(|(_, idx), (_, idx_2)| idx.cmp(idx_2));
+                if block.is_some() {
+                    let (selected_len, value) = block.unwrap();
+                    if value != 0 {
+                        map.get_mut(&selected_len)?.pop();
+                        set_groups[value * 2] = true;
+                        let checkadd: usize =
+                            (index..index + selected_len).map(|idx| idx * (value)).sum();
+                        checksum += checkadd;
+                        index += selected_len;
+                        current_block_length -= selected_len;
+                    } else {
+                        index += current_block_length;
+                        break;
+                    }
                 }
-                let y_block_length: usize = usize::from_str_radix(&input[y..y + 1], 10).unwrap();
-                if y_block_length <= current_block_length {
-                    current_block_length -= y_block_length;
-                    out_vec.push((y / 2, y_block_length));
-                    set_groups.push(y);
-                }
-                y -= 2;
-            }
-            if current_block_length > 0 {
-                out_vec.push((0, current_block_length));
             }
         }
     }
-    let mut checksum = 0;
-    let mut idx = 0;
-    for (id, num_elements) in out_vec {
-        for local_idx in 0..num_elements {
-            checksum += (idx + local_idx) * id;
-        }
-        idx += num_elements;
-    }
-
     Some(checksum)
 }
 
