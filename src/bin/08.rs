@@ -58,7 +58,6 @@ pub fn part_one(input: &str) -> Option<u32> {
             }
         }
     }
-    println!("{}", antinodes);
     Some(antinodes.sum())
 }
 
@@ -85,7 +84,6 @@ pub fn part_two(input: &str) -> Option<u32> {
             }
         }
     }
-    println!("{}", antinodes);
     Some(antinodes.sum())
 }
 
