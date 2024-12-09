@@ -1,7 +1,7 @@
 advent_of_code::solution!(8);
 
-use std::{collections::HashMap, iter::zip};
 use itertools::Itertools;
+use std::{collections::HashMap, iter::zip};
 
 use nalgebra::{self, DMatrix};
 
@@ -14,9 +14,15 @@ fn parse_input(input: &str) -> (DMatrix<char>, HashMap<char, Vec<(isize, isize)>
             locations[(y, idx)] = char_;
             if char_ != '.' {
                 if !antennas.contains_key(&char_) {
-                    antennas.insert(char_, vec![(y.try_into().unwrap(), idx.try_into().unwrap())]);
+                    antennas.insert(
+                        char_,
+                        vec![(y.try_into().unwrap(), idx.try_into().unwrap())],
+                    );
                 } else {
-                    antennas.get_mut(&char_).unwrap().push((y.try_into().unwrap(), idx.try_into().unwrap()));
+                    antennas
+                        .get_mut(&char_)
+                        .unwrap()
+                        .push((y.try_into().unwrap(), idx.try_into().unwrap()));
                 }
             }
         }
@@ -25,7 +31,10 @@ fn parse_input(input: &str) -> (DMatrix<char>, HashMap<char, Vec<(isize, isize)>
 }
 
 fn in_bounds(pos: (isize, isize), bounds: (usize, usize)) -> bool {
-    pos.0 >= 0 && pos.1 >= 0 && pos.0 < bounds.0.try_into().unwrap() && pos.1 < bounds.1.try_into().unwrap()
+    pos.0 >= 0
+        && pos.1 >= 0
+        && pos.0 < bounds.0.try_into().unwrap()
+        && pos.1 < bounds.1.try_into().unwrap()
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
@@ -39,7 +48,7 @@ pub fn part_one(input: &str) -> Option<u32> {
             let diff = (a.0 - b.0, a.1 - b.1);
             let check_1 = (a.0 + diff.0, a.1 + diff.1);
             let check_2 = (b.0 - diff.0, b.1 - diff.1);
-            if in_bounds(check_1, bounds){
+            if in_bounds(check_1, bounds) {
                 let convert = (check_1.0.try_into().unwrap(), check_1.1.try_into().unwrap());
                 antinodes[convert] = 1;
             }
@@ -74,7 +83,6 @@ pub fn part_two(input: &str) -> Option<u32> {
                 antinodes[convert] = 1;
                 check = (check.0 - diff.0, check.1 - diff.1);
             }
-            
         }
     }
     println!("{}", antinodes);

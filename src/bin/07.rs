@@ -18,72 +18,82 @@ fn parse_input(input: &str) -> Vec<(usize, Vec<usize>)> {
     equations
 }
 
-fn recursive_apply(
-    final_result: usize,
-    current_result: usize,
-    current_index: usize,
-    all_numbers: &Vec<usize>,
-) -> bool {
-    if current_index == all_numbers.len() {
-        if current_result == final_result {
+fn recursive_apply(current_result: usize, current_index: usize, all_numbers: &Vec<usize>) -> bool {
+    if current_index == 0 {
+        if current_result == all_numbers[current_index] {
             return true;
         } else {
             return false;
         }
     }
-    if current_result > final_result {
+    if current_result % all_numbers[current_index] == 0
+        && recursive_apply(
+            current_result / all_numbers[current_index],
+            current_index - 1,
+            all_numbers,
+        )
+    {
+        return true;
+    } else if 0 + all_numbers[current_index] <= current_result {
+        return recursive_apply(
+            current_result - all_numbers[current_index],
+            current_index - 1,
+            all_numbers,
+        );
+    } else {
         return false;
     }
-    return recursive_apply(
-        final_result,
-        current_result + all_numbers[current_index],
-        current_index + 1,
-        all_numbers,
-    ) || recursive_apply(
-        final_result,
-        current_result * all_numbers[current_index],
-        current_index + 1,
-        all_numbers,
-    );
+}
+
+fn find_pow10(number: usize) -> usize {
+    let mut value = 10;
+    while number / value > 0 {
+        value = value * 10;
+    }
+    value
 }
 
 fn recursive_apply_two(
-    final_result: usize,
     current_result: usize,
     current_index: usize,
     all_numbers: &Vec<usize>,
 ) -> bool {
-    if current_index == all_numbers.len() {
-        if current_result == final_result {
+    if current_index == 0 {
+        if current_result == all_numbers[current_index] {
             return true;
         } else {
             return false;
         }
     }
-    if current_result > final_result {
+    let n_digits = find_pow10(all_numbers[current_index]);
+    if current_result % all_numbers[current_index] == 0
+        && recursive_apply_two(
+            current_result / all_numbers[current_index],
+            current_index - 1,
+            all_numbers,
+        )
+    {
+        return true;
+    } else if current_result % n_digits == all_numbers[current_index]
+        && recursive_apply_two(current_result / n_digits, current_index - 1, all_numbers)
+    {
+        return true;
+    } else if 0 + all_numbers[current_index] <= current_result {
+        return recursive_apply_two(
+            current_result - all_numbers[current_index],
+            current_index - 1,
+            all_numbers,
+        );
+    } else {
         return false;
     }
-    let current_result_str: String = current_result.to_string();
-    let number = all_numbers[current_index].to_string();
-    let result = usize::from_str_radix(&(current_result_str + &number), 10).unwrap();
-    return recursive_apply_two(
-        final_result,
-        current_result + all_numbers[current_index],
-        current_index + 1,
-        all_numbers,
-    ) || recursive_apply_two(
-        final_result,
-        current_result * all_numbers[current_index],
-        current_index + 1,
-        all_numbers,
-    ) || recursive_apply_two(final_result, result, current_index + 1, all_numbers);
 }
 
 pub fn part_one(input: &str) -> Option<usize> {
     let parsed_input = parse_input(input);
     let mut sum_valid = 0;
     for equation in parsed_input {
-        if recursive_apply(equation.0, equation.1[0], 1, &equation.1) {
+        if recursive_apply(equation.0, equation.1.len() - 1, &equation.1) {
             sum_valid += equation.0;
         }
     }
@@ -94,7 +104,7 @@ pub fn part_two(input: &str) -> Option<usize> {
     let parsed_input = parse_input(input);
     let mut sum_valid = 0;
     for equation in parsed_input {
-        if recursive_apply_two(equation.0, equation.1[0], 1, &equation.1) {
+        if recursive_apply_two(equation.0, equation.1.len() - 1, &equation.1) {
             sum_valid += equation.0;
         }
     }

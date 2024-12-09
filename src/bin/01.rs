@@ -1,7 +1,6 @@
 advent_of_code::solution!(1);
 use std::iter::zip;
 
-
 pub fn part_one(input: &str) -> Option<u32> {
     let lines = input.split("\n");
     let capacity = input.len() / 14;
@@ -28,7 +27,7 @@ pub fn part_one(input: &str) -> Option<u32> {
 
 pub fn part_two(input: &str) -> Option<usize> {
     let lines = input.split("\n");
-    let mut num_elements: [usize;100000] = [0;100000];
+    let mut num_elements: [usize; 100000] = [0; 100000];
     let capacity = input.len() / 14;
     let mut values_1: Vec<usize> = Vec::with_capacity(capacity);
 
@@ -37,12 +36,8 @@ pub fn part_two(input: &str) -> Option<usize> {
             continue;
         }
         let mut values = line.split("   ");
-        values_1.push(
-            usize::from_str_radix(values.next().unwrap(), 10)
-                .unwrap()
-        );
-        num_elements[usize::from_str_radix(values.next().unwrap(), 10)
-        .unwrap()] += 1;
+        values_1.push(usize::from_str_radix(values.next().unwrap(), 10).unwrap());
+        num_elements[usize::from_str_radix(values.next().unwrap(), 10).unwrap()] += 1;
     }
     let mut result: usize = 0;
     for value in values_1 {

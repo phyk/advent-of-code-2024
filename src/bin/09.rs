@@ -6,9 +6,9 @@ pub fn part_one(input: &str) -> Option<usize> {
     let mut currently_block = true;
     let mut current_idx = 0;
     let mut y = input.len() - 2;
-    let mut y_value = usize::from_str_radix(&input[y..y+1], 10).unwrap();
+    let mut y_value = usize::from_str_radix(&input[y..y + 1], 10).unwrap();
     while x <= y {
-        let current_block_length = usize::from_str_radix(&input[x..x+1], 10).unwrap();
+        let current_block_length = usize::from_str_radix(&input[x..x + 1], 10).unwrap();
         if currently_block {
             let mut end_index = current_block_length;
             if x == y {
@@ -23,7 +23,7 @@ pub fn part_one(input: &str) -> Option<usize> {
                 y_value -= 1;
                 if y_value == 0 {
                     y -= 2;
-                    y_value = usize::from_str_radix(&input[y..y+1], 10).unwrap();
+                    y_value = usize::from_str_radix(&input[y..y + 1], 10).unwrap();
                 }
             }
         }
@@ -40,7 +40,7 @@ pub fn part_two(input: &str) -> Option<usize> {
     let mut out_vec = vec![];
     let mut set_groups = vec![];
     for x in 0..input.len() - 1 {
-        let mut current_block_length = usize::from_str_radix(&input[x..x+1], 10).unwrap();
+        let mut current_block_length = usize::from_str_radix(&input[x..x + 1], 10).unwrap();
         let mut y = input.len() - 2;
         if currently_block {
             currently_block = !currently_block;
@@ -57,7 +57,7 @@ pub fn part_two(input: &str) -> Option<usize> {
                     y -= 2;
                     continue;
                 }
-                let y_block_length: usize = usize::from_str_radix(&input[y..y+1], 10).unwrap();
+                let y_block_length: usize = usize::from_str_radix(&input[y..y + 1], 10).unwrap();
                 if y_block_length <= current_block_length {
                     current_block_length -= y_block_length;
                     out_vec.push((y / 2, y_block_length));
