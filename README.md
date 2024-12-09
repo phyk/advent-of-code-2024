@@ -11,7 +11,7 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.
 
 | Day | Part 1 | Part 2 |
 | :---: | :---: | :---:  |
-| [Day 1](./src/bin/01.rs) | `252.0µs` | `264.4µs` |
+| [Day 1](./src/bin/01.rs) | `48.9µs` | `49.8µs` |
 | [Day 2](./src/bin/02.rs) | `101.4µs` | `133.3µs` |
 | [Day 3](./src/bin/03.rs) | `99.8µs` | `138.2µs` |
 | [Day 4](./src/bin/04.rs) | `305.8µs` | `45.2µs` |
@@ -21,7 +21,7 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.
 | [Day 8](./src/bin/08.rs) | `939.0µs` | `938.9µs` |
 | [Day 9](./src/bin/09.rs) | `86.5µs` | `15.0ns` |
 
-**Total: 200.08ms**
+**Total: 199.66ms**
 <!--- benchmarking table --->
 
 ✨ You can start solving puzzles now! Head to the [Usage section](#usage) to see how to use this template. If you like, you can configure [some optional features](#optional-template-features).
