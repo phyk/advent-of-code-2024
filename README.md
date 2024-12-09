@@ -11,17 +11,17 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.
 
 | Day | Part 1 | Part 2 |
 | :---: | :---: | :---:  |
-| [Day 1](./src/bin/01.rs) | `48.9µs` | `49.8µs` |
-| [Day 2](./src/bin/02.rs) | `101.4µs` | `133.3µs` |
-| [Day 3](./src/bin/03.rs) | `99.8µs` | `138.2µs` |
-| [Day 4](./src/bin/04.rs) | `305.8µs` | `45.2µs` |
-| [Day 5](./src/bin/05.rs) | `240.8µs` | `391.3µs` |
-| [Day 6](./src/bin/06.rs) | `247.8µs` | `28.5ms` |
-| [Day 7](./src/bin/07.rs) | `183.0µs` | `211.2µs` |
-| [Day 8](./src/bin/08.rs) | `18.2µs` | `20.2µs` |
-| [Day 9](./src/bin/09.rs) | `86.5µs` | `15.0ns` |
+| [Day 1](./src/bin/01.rs) | `49.0µs` | `49.7µs` |
+| [Day 2](./src/bin/02.rs) | `99.1µs` | `128.5µs` |
+| [Day 3](./src/bin/03.rs) | `101.5µs` | `142.1µs` |
+| [Day 4](./src/bin/04.rs) | `296.7µs` | `46.7µs` |
+| [Day 5](./src/bin/05.rs) | `241.4µs` | `384.6µs` |
+| [Day 6](./src/bin/06.rs) | `232.4µs` | `27.1ms` |
+| [Day 7](./src/bin/07.rs) | `183.0µs` | `198.4µs` |
+| [Day 8](./src/bin/08.rs) | `18.4µs` | `20.8µs` |
+| [Day 9](./src/bin/09.rs) | `81.7µs` | `871.9µs` |
 
-**Total: 30.82ms**
+**Total: 30.25ms**
 <!--- benchmarking table --->
 
 ✨ You can start solving puzzles now! Head to the [Usage section](#usage) to see how to use this template. If you like, you can configure [some optional features](#optional-template-features).
