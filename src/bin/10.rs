@@ -85,7 +85,6 @@ pub fn part_one(input: &str) -> Option<u32> {
     Some(out_sum)
 }
 
-
 fn neighbor_sum_two<'a>(
     coords: (usize, usize),
     in_matrix: &'a DMatrix<u8>,
