@@ -3,6 +3,7 @@ advent_of_code::solution!(6);
 use std::{collections::HashSet, iter::zip, vec};
 
 use nalgebra::{self, DMatrix};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 #[derive(PartialEq, Clone, Copy, Debug)]
 enum Direction {
     Up,
@@ -239,6 +240,50 @@ pub fn part_two(input: &str) -> Option<usize> {
         }
     }
     Some(cycle_positions.len())
+}
+
+pub fn part_two_parallel(input: &str) -> Option<usize> {
+    let (obstacles, starting_position) = parse_input(input);
+    let bounds = (obstacles.nrows(), obstacles.ncols());
+    let mut visited = HashSet::new();
+    let mut direction = Direction::Up;
+    let mut position = starting_position;
+
+    loop {
+        let before_next_obstacle = next_obstacle(&position, &direction, &obstacles);
+        visit_till_next_obstacle(
+            &position,
+            &before_next_obstacle,
+            &direction,
+            &bounds,
+            &mut visited,
+        );
+        match before_next_obstacle {
+            None => break,
+            Some(point) => {
+                direction = direction.increase();
+                position = point;
+            }
+        }
+    }
+
+    let cycle_positions = visited.par_iter().map(|obstacle| -> usize{
+        if *obstacle == starting_position {
+            return 0;
+        } else {
+            if is_cycle(
+                &starting_position,
+                Direction::Up,
+                &obstacle,
+                obstacles.clone(),
+            ) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }).sum();
+    Some(cycle_positions)
 }
 
 #[cfg(test)]
