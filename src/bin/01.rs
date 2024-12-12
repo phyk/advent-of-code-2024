@@ -1,27 +1,31 @@
 advent_of_code::solution!(1);
-use std::iter::zip;
+
+use rayon::{iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator}, slice::ParallelSliceMut, str::ParallelString};
+
+pub fn part_one_parallel(input: &str) -> Option<u32> {
+    let (mut values_1, mut values_2): (Vec<u32>, Vec<u32>) = input.par_lines().map(|line: &str| -> (u32, u32) {
+        let mut values = line.split("   ");
+        (u32::from_str_radix(values.next().unwrap(), 10).unwrap(),
+        u32::from_str_radix(values.next().unwrap(), 10).unwrap())
+    }).unzip();
+    values_1.par_sort();
+    values_2.par_sort();
+
+    let list_diff: u32 = values_1.into_par_iter().zip(values_2).map(|(a, b)| a.abs_diff(b)).sum();
+    Some(list_diff)
+}
+
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let lines = input.split("\n");
-    let capacity = input.len() / 14;
-    let mut values_1: Vec<u32> = Vec::with_capacity(capacity);
-    let mut values_2: Vec<u32> = Vec::with_capacity(capacity);
-
-    for line in lines {
-        if line.len() == 0 {
-            continue;
-        }
+    let (mut values_1, mut values_2): (Vec<u32>, Vec<u32>) = input.lines().map(|line: &str| -> (u32, u32) {
         let mut values = line.split("   ");
-        values_1.push(u32::from_str_radix(values.next()?, 10).unwrap());
-        values_2.push(u32::from_str_radix(values.next()?, 10).unwrap());
-    }
+        (u32::from_str_radix(values.next().unwrap(), 10).unwrap(),
+        u32::from_str_radix(values.next().unwrap(), 10).unwrap())
+    }).unzip();
     values_1.sort();
     values_2.sort();
 
-    let mut list_diff: u32 = u32::MIN;
-    for (value_1, value_2) in zip(values_1, values_2) {
-        list_diff += value_1.abs_diff(value_2)
-    }
+    let list_diff: u32 = values_1.into_iter().zip(values_2).map(|(a, b)| a.abs_diff(b)).sum();
     Some(list_diff)
 }
 
