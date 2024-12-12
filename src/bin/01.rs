@@ -1,31 +1,52 @@
 advent_of_code::solution!(1);
 
-use rayon::{iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator}, slice::ParallelSliceMut, str::ParallelString};
+use rayon::{
+    iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator},
+    slice::ParallelSliceMut,
+    str::ParallelString,
+};
 
 pub fn part_one_parallel(input: &str) -> Option<u32> {
-    let (mut values_1, mut values_2): (Vec<u32>, Vec<u32>) = input.par_lines().map(|line: &str| -> (u32, u32) {
-        let mut values = line.split("   ");
-        (u32::from_str_radix(values.next().unwrap(), 10).unwrap(),
-        u32::from_str_radix(values.next().unwrap(), 10).unwrap())
-    }).unzip();
+    let (mut values_1, mut values_2): (Vec<u32>, Vec<u32>) = input
+        .par_lines()
+        .map(|line: &str| -> (u32, u32) {
+            let mut values = line.split("   ");
+            (
+                u32::from_str_radix(values.next().unwrap(), 10).unwrap(),
+                u32::from_str_radix(values.next().unwrap(), 10).unwrap(),
+            )
+        })
+        .unzip();
     values_1.par_sort();
     values_2.par_sort();
 
-    let list_diff: u32 = values_1.into_par_iter().zip(values_2).map(|(a, b)| a.abs_diff(b)).sum();
+    let list_diff: u32 = values_1
+        .into_par_iter()
+        .zip(values_2)
+        .map(|(a, b)| a.abs_diff(b))
+        .sum();
     Some(list_diff)
 }
 
-
 pub fn part_one(input: &str) -> Option<u32> {
-    let (mut values_1, mut values_2): (Vec<u32>, Vec<u32>) = input.lines().map(|line: &str| -> (u32, u32) {
-        let mut values = line.split("   ");
-        (u32::from_str_radix(values.next().unwrap(), 10).unwrap(),
-        u32::from_str_radix(values.next().unwrap(), 10).unwrap())
-    }).unzip();
+    let (mut values_1, mut values_2): (Vec<u32>, Vec<u32>) = input
+        .lines()
+        .map(|line: &str| -> (u32, u32) {
+            let mut values = line.split("   ");
+            (
+                u32::from_str_radix(values.next().unwrap(), 10).unwrap(),
+                u32::from_str_radix(values.next().unwrap(), 10).unwrap(),
+            )
+        })
+        .unzip();
     values_1.sort();
     values_2.sort();
 
-    let list_diff: u32 = values_1.into_iter().zip(values_2).map(|(a, b)| a.abs_diff(b)).sum();
+    let list_diff: u32 = values_1
+        .into_iter()
+        .zip(values_2)
+        .map(|(a, b)| a.abs_diff(b))
+        .sum();
     Some(list_diff)
 }
 

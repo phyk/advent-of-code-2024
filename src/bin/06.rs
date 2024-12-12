@@ -267,22 +267,25 @@ pub fn part_two_parallel(input: &str) -> Option<usize> {
         }
     }
 
-    let cycle_positions = visited.par_iter().map(|obstacle| -> usize{
-        if *obstacle == starting_position {
-            return 0;
-        } else {
-            if is_cycle(
-                &starting_position,
-                Direction::Up,
-                &obstacle,
-                obstacles.clone(),
-            ) {
-                return 1;
-            } else {
+    let cycle_positions = visited
+        .par_iter()
+        .map(|obstacle| -> usize {
+            if *obstacle == starting_position {
                 return 0;
+            } else {
+                if is_cycle(
+                    &starting_position,
+                    Direction::Up,
+                    &obstacle,
+                    obstacles.clone(),
+                ) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
-        }
-    }).sum();
+        })
+        .sum();
     Some(cycle_positions)
 }
 
