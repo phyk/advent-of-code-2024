@@ -8,7 +8,7 @@ enum State {
     Wall,
     Empty,
     Position,
-    End
+    End,
 }
 
 impl Display for State {
@@ -27,14 +27,14 @@ enum Direction {
     Up,
     Left,
     Right,
-    Down
+    Down,
 }
 
 #[derive(PartialEq, Debug)]
 enum PathProperty {
     DeadEnd,
     End,
-    Crossing
+    Crossing,
 }
 
 #[derive(Clone, Debug)]
@@ -42,7 +42,7 @@ struct Path {
     position: (usize, usize),
     direction: Direction,
     cost: usize,
-    previous_positions: Vec<(usize, usize)>
+    previous_positions: Vec<(usize, usize)>,
 }
 
 fn move_position(position: &(usize, usize), direction: &Direction) -> (usize, usize) {
@@ -50,7 +50,7 @@ fn move_position(position: &(usize, usize), direction: &Direction) -> (usize, us
         Direction::Down => (position.0 + 1, position.1),
         Direction::Left => (position.0, position.1 - 1),
         Direction::Right => (position.0, position.1 + 1),
-        Direction::Up => (position.0 - 1, position.1)
+        Direction::Up => (position.0 - 1, position.1),
     }
 }
 
@@ -76,14 +76,17 @@ impl Path {
         let possible_movement: Vec<((usize, usize), Direction)> = [
             (&self.position, self.direction.clone()),
             (&self.position, turn_left(&self.direction)),
-            (&self.position, turn_right(&self.direction))
-        ].iter().map(|(pos, d)| (move_position(*pos, d), d.clone()))
-            .filter(|(p, _)| grid[*p] != State::Wall).collect();
+            (&self.position, turn_right(&self.direction)),
+        ]
+        .iter()
+        .map(|(pos, d)| (move_position(*pos, d), d.clone()))
+        .filter(|(p, _)| grid[*p] != State::Wall)
+        .collect();
         let num_possibilities = possible_movement.len();
         if grid[self.position] == State::End {
             return PathProperty::End;
         }
-        
+
         if num_possibilities == 0 {
             return PathProperty::DeadEnd;
         }
@@ -120,7 +123,9 @@ impl Ord for Path {
 }
 impl PartialEq for Path {
     fn eq(&self, other: &Self) -> bool {
-        self.position == other.position && self.direction == other.direction && self.cost == other.cost
+        self.position == other.position
+            && self.direction == other.direction
+            && self.cost == other.cost
     }
 }
 impl PartialOrd for Path {
@@ -130,20 +135,30 @@ impl PartialOrd for Path {
 }
 impl Eq for Path {}
 
-fn parse_input(input: &str) -> (nalgebra::Matrix<State, nalgebra::Dyn, nalgebra::Dyn, nalgebra::VecStorage<State, nalgebra::Dyn, nalgebra::Dyn>>, (usize, usize)) {
+fn parse_input(
+    input: &str,
+) -> (
+    nalgebra::Matrix<
+        State,
+        nalgebra::Dyn,
+        nalgebra::Dyn,
+        nalgebra::VecStorage<State, nalgebra::Dyn, nalgebra::Dyn>,
+    >,
+    (usize, usize),
+) {
     let lines: Vec<&str> = input.lines().collect();
     let mut matrix = nalgebra::DMatrix::from_element(lines.len(), lines[0].len(), State::Empty);
     let mut starting_position = (0, 0);
     for (y, line) in lines.into_iter().enumerate() {
         for (x, char_) in line.chars().into_iter().enumerate() {
             match char_ {
-                '#' => {*matrix.get_mut((y, x)).unwrap() = State::Wall},
-                'E' => {*matrix.get_mut((y, x)).unwrap() = State::End},
+                '#' => *matrix.get_mut((y, x)).unwrap() = State::Wall,
+                'E' => *matrix.get_mut((y, x)).unwrap() = State::End,
                 'S' => {
                     *matrix.get_mut((y, x)).unwrap() = State::Position;
                     starting_position = (y, x);
-                },
-                _ => ()
+                }
+                _ => (),
             }
         }
     }
@@ -152,10 +167,16 @@ fn parse_input(input: &str) -> (nalgebra::Matrix<State, nalgebra::Dyn, nalgebra:
 
 pub fn part_one(input: &str) -> Option<usize> {
     let (matrix, position) = parse_input(input);
-    let mut cost_matrix = nalgebra::DMatrix::from_element(matrix.nrows(), matrix.ncols(), usize::MAX);
+    let mut cost_matrix =
+        nalgebra::DMatrix::from_element(matrix.nrows(), matrix.ncols(), usize::MAX);
     let mut min_cost = usize::MAX;
     let mut heap = BinaryHeap::new();
-    heap.push(Reverse(Path{position, direction: Direction::Right, cost: 0, previous_positions: vec![]}));
+    heap.push(Reverse(Path {
+        position,
+        direction: Direction::Right,
+        cost: 0,
+        previous_positions: vec![],
+    }));
     while !heap.is_empty() && heap.peek().unwrap().0.cost < min_cost {
         let current_path = heap.pop().unwrap().0;
         if cost_matrix[current_path.position] < current_path.cost {
@@ -209,14 +230,22 @@ pub fn part_one(input: &str) -> Option<usize> {
 
 pub fn part_two(input: &str) -> Option<usize> {
     let (matrix, position) = parse_input(input);
-    let mut cost_matrix = nalgebra::DMatrix::from_element(matrix.nrows(), matrix.ncols(), usize::MAX);
+    let mut cost_matrix =
+        nalgebra::DMatrix::from_element(matrix.nrows(), matrix.ncols(), usize::MAX);
     let mut min_cost = usize::MAX;
     let mut min_cost_paths = vec![];
     let mut heap = BinaryHeap::new();
-    heap.push(Reverse(Path{position, direction: Direction::Right, cost: 0, previous_positions: vec![position]}));
+    heap.push(Reverse(Path {
+        position,
+        direction: Direction::Right,
+        cost: 0,
+        previous_positions: vec![position],
+    }));
     while !heap.is_empty() && heap.peek().unwrap().0.cost < min_cost {
         let current_path = heap.pop().unwrap().0;
-        if cost_matrix[current_path.position] != usize::MAX && cost_matrix[current_path.position] + 1000 < current_path.cost {
+        if cost_matrix[current_path.position] != usize::MAX
+            && cost_matrix[current_path.position] + 1000 < current_path.cost
+        {
             continue;
         } else {
             *cost_matrix.get_mut(current_path.position).unwrap() = current_path.cost;
